@@ -1,0 +1,194 @@
+[
+  {
+    "number": 1,
+    "title": "Cost",
+    "user": "I need the useful work without a premium extension.",
+    "engineering": "Local collection, statistics and every export must remain independent of a paid model.",
+    "decision": "Kept the full local path free; the API is an explicitly optional paid boundary.",
+    "evidence": "README; API consent UI; hks-test.cjs"
+  },
+  {
+    "number": 2,
+    "title": "Brand and visual identity",
+    "user": "The old generic appearance does not feel like my app.",
+    "engineering": "A strong identity should not need a framework, remote font or stock illustration.",
+    "decision": "HKS_67 now has a four-color geometric SVG/PNG identity and a restrained hard-border interface.",
+    "evidence": "icons/; popup.html/css; real-624-workspace.png"
+  },
+  {
+    "number": 3,
+    "title": "Landscape readability",
+    "user": "I want aligned controls, not a tall pile of tiny buttons.",
+    "engineering": "A Chrome popup has a limited width/height; readable text may require vertical scrolling.",
+    "decision": "Used a 780px landscape shell, compact grouped controls and a wider workspace. No promise of zero vertical scrolling.",
+    "evidence": "Chrome compact-popup check; 780/1280px UI audit"
+  },
+  {
+    "number": 4,
+    "title": "Narrow layouts and zoom",
+    "user": "It should work on my laptop, even with less space.",
+    "engineering": "CSS layout checks cannot certify every OS zoom, browser policy or screen reader.",
+    "decision": "Verified 320/640/780/1280px document boundaries; disclose that these are not all-device/actual-zoom certification.",
+    "evidence": "ui-audit.cjs; VALIDATION.md"
+  },
+  {
+    "number": 5,
+    "title": "One Export dropdown",
+    "user": "Too many format buttons make the screen busy.",
+    "engineering": "The dropdown must still work without a pointer and expose its open state.",
+    "decision": "Single collapsed menu with arrow/Home/End navigation, Escape close, focus return and accessible labels.",
+    "evidence": "chrome-e2e.cjs; popup.js"
+  },
+  {
+    "number": 6,
+    "title": "CSV row mess",
+    "user": "Long URL dumps and multiline cells are hard to scan.",
+    "engineering": "CSV cannot store column widths, colors, pictures or a different hidden hyperlink target.",
+    "decision": "Clean uppercase CSV flattens body whitespace and moves media URLs to Media CSV; original text remains in Detailed CSV/JSON.",
+    "evidence": "hks-test.cjs; README export matrix"
+  },
+  {
+    "number": 7,
+    "title": "Username/profile separation",
+    "user": "I want the username and profile link in different columns.",
+    "engineering": "Presentation labels must not destroy the actual URL or author data.",
+    "decision": "Separate USERNAME and PROFILE URL; Excel displays a short OPEN PROFILE link while preserving the target.",
+    "evidence": "624-row openpyxl validation; analysis.js"
+  },
+  {
+    "number": 8,
+    "title": "Long numeric IDs",
+    "user": "Do not corrupt comment identifiers in Excel.",
+    "engineering": "Quoted CSV alone cannot stop spreadsheet auto-inference or rounding of 19-digit IDs.",
+    "decision": "Workbook IDs are text; CSV documentation instructs text import. No formula-based ID workaround.",
+    "evidence": "xlsx-test.cjs; actual A2 text-cell check"
+  },
+  {
+    "number": 9,
+    "title": "Professional Excel",
+    "user": "A renamed CSV is not a real Excel deliverable.",
+    "engineering": "OOXML needs valid relationships, styles, tables and charts, not only a .xlsx suffix.",
+    "decision": "Four real worksheets, two native charts, genuine tables, frozen headers, wrapping and color.",
+    "evidence": "ZIP/CRC tests; independent openpyxl chart/table parsing"
+  },
+  {
+    "number": 10,
+    "title": "Oversized spreadsheet cells",
+    "user": "I still need all the comment content.",
+    "engineering": "Excel has a hard 32,767 UTF-16-unit cell limit, and fixed-height rows cannot show everything at once.",
+    "decision": "Count/label truncation in Coverage; keep JSON lossless and allow the full body through Excel cell/formula-bar inspection.",
+    "evidence": "Oversized-cell unit test; Coverage sheet"
+  },
+  {
+    "number": 11,
+    "title": "See available media",
+    "user": "A link is not enough when the image could be displayed.",
+    "engineering": "The server may reject a URL, omit it, or return a format the browser cannot decode.",
+    "decision": "Inline image/video previews try returned variants, expose errors and offer explicit retry; no autoplay.",
+    "evidence": "Chrome 403/fallback/no-loop fixture checks"
+  },
+  {
+    "number": 12,
+    "title": "Missing photos",
+    "user": "Can you repair all 80 missing pictures?",
+    "engineering": "No client can recreate a photo URL that the session never returned without inventing evidence.",
+    "decision": "Preserved all 80 unavailable-photo labels. Did not substitute synthetic pictures or claim recovery.",
+    "evidence": "Historical archive; media/core tests; sample report"
+  },
+  {
+    "number": 13,
+    "title": "Photos inside Excel",
+    "user": "I want images beside the corresponding row.",
+    "engineering": "Fetching everything can leak requests, hit expiry, inflate files and stall small devices.",
+    "decision": "Opt-in known-CDN downloads: 20 rows, 2 MB/response, 8-second fetch budget/row; PNG stills only. One real returned GIF still is in the sample.",
+    "evidence": "thumbnails.js; Chrome GIF-to-PNG test; openpyxl image check"
+  },
+  {
+    "number": 14,
+    "title": "Top-three definitions",
+    "user": "Top three likes/comments should be immediately understandable.",
+    "engineering": "Most-liked comments and most-active commenters are different statistics; filtered data changes both.",
+    "decision": "Separate top-three liked comments, commenters by collected rows, and threads by collected replies; label denominator and ties.",
+    "evidence": "analysis.js; hks-test.cjs"
+  },
+  {
+    "number": 15,
+    "title": "Charts versus invented insight",
+    "user": "I want useful analysis, not decoration or fabricated conclusions.",
+    "engineering": "Local counts do not establish sentiment, intent, demographics or causal explanations.",
+    "decision": "Added content, likes, UTC-time and media charts with methodology; semantic interpretation exists only in the labelled optional AI section.",
+    "evidence": "Local HTML report; no external analysis requests"
+  },
+  {
+    "number": 16,
+    "title": "Partial coverage",
+    "user": "The platform reports 639; do not quietly call 624 complete.",
+    "engineering": "Reported counters and returned records can differ for reasons a client cannot conclusively identify.",
+    "decision": "Display partial status, 624 saved/639 reported, the difference and reply gaps; preserve original source status on import.",
+    "evidence": "State tests; real archive; imported partial badge"
+  },
+  {
+    "number": 17,
+    "title": "Ask ChatGPT automation",
+    "user": "I want the whole dataset passed to ChatGPT without tedious work.",
+    "engineering": "Blind website injection/submission is brittle, privacy-sensitive and account/UI dependent.",
+    "decision": "Preview the complete prompt; copy/open or download it; user pastes/reviews/sends. No claim of automatic website submission.",
+    "evidence": "AI-dialog fixture; full prompt download check"
+  },
+  {
+    "number": 18,
+    "title": "Optional API convenience",
+    "user": "I would rather generate and download the report directly.",
+    "engineering": "A model request can cost money and fail on account access, quota, model or context size.",
+    "decision": "Explicit consent and optional host permission, fixed Responses endpoint, editable model, size/output/time limits and no automatic paid retry.",
+    "evidence": "Mock provider boundary tests; actual paid account NOT verified"
+  },
+  {
+    "number": 19,
+    "title": "API-key handling",
+    "user": "Do not put my key in a file or saved extension state.",
+    "engineering": "A browser-memory string is transient, not a hardware vault, and cancellation cannot guarantee no provider charge.",
+    "decision": "Key is never persisted/exported; clear on request/close/Escape/pagehide; cancellation is best effort.",
+    "evidence": "Chrome storage and Escape-clearing test; ai.js/ui.js"
+  },
+  {
+    "number": 20,
+    "title": "Privacy and anonymization",
+    "user": "I want an option not to send names.",
+    "engineering": "Bodies, mentions and context may identify people even after usernames are removed.",
+    "decision": "Username omission is available; raw objects/profile/signed URLs are excluded from the AI pack; wording explicitly says not anonymization.",
+    "evidence": "Prompt boundary test; exact-payload preview"
+  },
+  {
+    "number": 21,
+    "title": "Untrusted comments and AI output",
+    "user": "Comments or model output must not run code or hijack the report.",
+    "engineering": "Source text can contain HTML and prompt-injection attempts; a model may still produce wrong interpretations.",
+    "decision": "Text nodes/escaping, no executable model HTML, explicit untrusted-data instruction, separately labelled interpretation and evidence.",
+    "evidence": "HTML script-injection tests; mocked provider-output escaping"
+  },
+  {
+    "number": 22,
+    "title": "Resume and live errors",
+    "user": "A refresh or second tab must not lose hours of collection.",
+    "engineering": "Concurrent writers, quota exhaustion and rate limits require fail-closed behavior, not heroic promises.",
+    "decision": "Retained single-writer lease, per-page checkpoints, headload cursors, pause/resume, quota warning and stop-on-critical-error handling.",
+    "evidence": "13 state checks; Chrome refresh/lease/pause/429 fixtures"
+  },
+  {
+    "number": 23,
+    "title": "Accessibility and corrections",
+    "user": "Small print, invisible focus and clipped text are frustrating.",
+    "engineering": "A successful automated audit is narrower than real assistive-technology testing.",
+    "decision": "Increased density fonts, native focus/dialog/menu, full-text disclosure, offline Tamil glyph fallback and reduced-motion rule; fixed the selected-tab hover contrast issue found by axe.",
+    "evidence": "Zero axe violations in setup/review/dialog; manual SR testing NOT verified"
+  },
+  {
+    "number": 24,
+    "title": "Maintainability and release claims",
+    "user": "I need something that can be updated, not an untested bundle.",
+    "engineering": "Instagram schemas and third-party services change; packaging cannot guarantee every laptop or future version.",
+    "decision": "Separated analysis/Excel/media/AI modules, formatted readable source, schema/architecture docs and reproducible fixtures. Treat live source/API changes as maintenance work.",
+    "evidence": "85 grouped checks plus UI audits; historical 624-row validation; README boundaries"
+  }
+]

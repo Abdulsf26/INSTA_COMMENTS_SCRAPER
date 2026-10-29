@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>HKS_67</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <img class="logo" src="icons/logo.svg" alt="" width="38" height="38" />
+        <h1>HKS_67</h1>
+        <small>COMMENT<br />COLLECTOR / 05</small>
+      </div>
+      <button id="expand" title="Open full-width workspace">
+        Open workspace ↗
+      </button>
+    </header>
+    <main>
+      <div class="summary">
+        <section class="hero">
+          <div class="eyebrow">
+            <span class="dot" id="dot"></span
+            ><span id="connection">Connecting</span><b id="status">READY</b>
+          </div>
+          <h2 id="post">Open an Instagram post</h2>
+          <p id="phase">Your session. Your export.</p>
+          <div class="progress"><div id="progress"></div></div>
+          <div class="coverage-line">
+            <span id="coverage">No collection yet</span
+            ><span id="checkpoint">—</span>
+          </div>
+        </section>
+        <section class="stats">
+          <div><label>ROWS</label><strong id="total">0</strong></div>
+          <div>
+            <label>ROOT / REPLIES</label><strong id="threads">0 / 0</strong>
+          </div>
+          <div><label>MEDIA ROWS</label><strong id="media">0</strong></div>
+          <div>
+            <label>ASSETS / URLS</label><strong id="assets">0 / 0</strong>
+          </div>
+        </section>
+      </div>
+      <section id="error-box" class="alert error" role="alert" hidden>
+        <b id="error-title"></b>
+        <p id="error-message"></p>
+        <small id="error-hint"></small>
+      </section>
+      <section id="warning-box" class="alert warning" hidden></section>
+      <div class="toolbar">
+        <nav class="tabs" aria-label="Sections">
+          <button class="tab active" aria-pressed="true" data-panel="collect">
+            01 Setup</button
+          ><button class="tab" aria-pressed="false" data-panel="review">
+            02 Comments</button
+          ><button class="tab" aria-pressed="false" data-panel="activity">
+            03 Log
+          </button>
+        </nav>
+        <button
+          id="ask-chatgpt"
+          title="Preview a prompt and choose a manual or optional API handoff"
+        >
+          Ask ChatGPT ↗
+        </button>
+        <div class="export-control">
+          <button
+            id="export-toggle"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls="export-menu"
+          >
+            Export ↓
+          </button>
+          <div id="export-menu" role="menu" hidden>
+            <button id="csv" role="menuitem">
+              CSV <small>Clean headers / compact rows</small></button
+            ><button id="xlsx" role="menuitem">
+              Excel .xlsx <small>Styled tables + 2 native charts</small></button
+            ><button id="json" role="menuitem">
+              JSON <small>Full data and raw objects</small></button
+            ><button id="media-csv" role="menuitem">
+              Media CSV <small>One row per rendition</small></button
+            ><button id="html" role="menuitem">
+              HTML report
+              <small>Rankings, charts & full evidence</small></button
+            ><button id="archive" role="menuitem">
+              Media archive HTML
+              <small>Searchable archive with opt-in media</small></button
+            ><button id="detailed-csv" role="menuitem">
+              Detailed CSV <small>All normalized columns / full text</small>
+            </button>
+          </div>
+        </div>
+      </div>
+      <section id="collect" class="panel">
+        <div class="collect-grid">
+          <div>
+            <div class="section-title">
+              <h3>Collection settings</h3>
+              <span>One writer at a time</span>
+            </div>
+            <div class="settings">
+              <label class="engine"
+                >Engine<select id="mode">
+                  <option value="api">Deep pagination · recommended</option>
+                  <option value="browser">Visible-page auto-loader</option>
+                </select></label
+              ><label
+                >Root limit · 0 = all<input
+                  id="limit"
+                  type="number"
+                  min="0"
+                  max="1000000"
+                  value="0" /></label
+              ><label
+                >Delay / ms<input
+                  id="delay"
+                  type="number"
+                  min="1500"
+                  max="30000"
+                  value="2500"
+              /></label>
+            </div>
+            <div class="checks">
+              <label
+                ><input type="checkbox" id="include" checked /> Reply
+                threads</label
+              ><label
+                ><input type="checkbox" id="raw" checked /> Raw API
+                objects</label
+              ><label
+                ><input type="checkbox" id="autoResume" checked /> Resume after
+                refresh</label
+              ><label
+                ><input type="checkbox" id="reloadOnce" /> Reload once on UI
+                stall</label
+              >
+            </div>
+            <div class="actions">
+              <button id="start" class="primary">Start collection →</button
+              ><button id="pause">Pause</button
+              ><button id="resume">Resume</button>
+            </div>
+          </div>
+          <aside class="field-notes">
+            <h3>Before you start</h3>
+            <ol>
+              <li>Keep the original post tab open.</li>
+              <li>Use limit <b>0</b> to walk all returned pages.</li>
+              <li>Export before replacing a collection.</li>
+            </ol>
+            <p>
+              Reported counts may include rows the session does not return. Gaps
+              stay visible.
+            </p>
+          </aside>
+        </div>
+      </section>
+      <section id="review" class="panel" hidden>
+        <div class="section-title">
+          <h3>Comments & media</h3>
+          <div class="review-tools">
+            <label
+              ><input type="checkbox" id="previews" checked /> Media
+              previews</label
+            ><button id="load-all" class="small">Load full snapshot</button>
+          </div>
+        </div>
+        <div class="filters">
+          <input
+            id="search"
+            type="search"
+            placeholder="Search text, author or media title"
+            aria-label="Search rows"
+          /><select id="type" aria-label="Content type">
+            <option value="all">All types</option>
+            <option>text</option>
+            <option>gif</option>
+            <option>sticker</option>
+            <option>image</option>
+            <option>video</option>
+            <option>shared_post</option>
+            <option>album</option>
+            <option>mixed</option>
+            <option>unknown_media</option>
+            <option>empty</option></select
+          ><select id="sort" aria-label="Sort rows">
+            <option value="recent">Newest first</option>
+            <option value="likes">Most liked</option>
+            <option value="original">Collection order</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Author / UTC</th>
+                <th>Comment & attachment</th>
+                <th>Likes</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <span id="row-count"></span
+          ><button id="previous" class="small">← Prev</button
+          ><button id="next" class="small">Next →</button>
+        </div>
+        <div class="export-options">
+          <label
+            ><input id="filtered-export" type="checkbox" /> Export matching rows
+            only</label
+          ><label
+            ><input id="embed-xlsx" type="checkbox" /> Excel thumbnails · opt-in
+            / max 20</label
+          ><label class="import-button"
+            >Import JSON<input
+              type="file"
+              id="import"
+              accept=".json,application/json"
+              hidden
+          /></label>
+        </div>
+        <p id="review-scope" class="help">
+          Recent rows stream here. Load a full snapshot for all rows.
+        </p>
+        <p class="help">
+          Previews contact the source CDN only on this tab. Broken or expired
+          links are labelled; rerun collection for fresh returned links. Missing
+          photo URLs cannot be reconstructed.
+        </p>
+      </section>
+      <section id="activity" class="panel" hidden>
+        <div class="section-title">
+          <h3>Activity & errors</h3>
+          <button id="diagnostics" class="small">Diagnostic JSON ↓</button>
+        </div>
+        <div class="telemetry">
+          <span id="requests">0 requests</span
+          ><span id="retries">0 retries</span
+          ><span id="duplicates">0 duplicate IDs</span
+          ><span id="pages">0 pages</span>
+        </div>
+        <div class="log-grid">
+          <pre id="log" aria-live="polite">Waiting for a collection.</pre>
+          <details open>
+            <summary>Coverage / reply gaps</summary>
+            <pre id="gaps"></pre>
+          </details>
+        </div>
+      </section>
+      <div id="notice" role="status" aria-live="polite"></div>
+    </main>
+    <footer>
+      <span>LOCAL-FIRST / NO TELEMETRY</span
+      ><span>v5.0 · Respect privacy & platform terms</span>
+    </footer>
+    <dialog id="ai-dialog" aria-labelledby="ai-title">
+      <div class="dialog-head">
+        <h2 id="ai-title">Ask ChatGPT / review first</h2>
+        <button id="ai-close" aria-label="Close AI handoff">Close ×</button>
+      </div>
+      <p class="help">
+        All exported comment bodies are included. Raw objects, profile URLs and
+        signed media URLs are excluded. Names can be omitted, but bodies may
+        still identify people. Nothing is sent by opening this panel.
+      </p>
+      <label class="field-label" for="ai-instruction"
+        >Your summary instructions</label
+      ><textarea id="ai-instruction" rows="4"></textarea
+      ><label class="inline-check"
+        ><input type="checkbox" id="ai-names" checked /> Include usernames (not
+        anonymization)</label
+      >
+      <details>
+        <summary id="ai-size">Review exact outgoing prompt</summary>
+        <textarea
+          id="ai-preview"
+          rows="8"
+          readonly
+          aria-label="Exact prompt and complete comment dataset"
+        ></textarea>
+      </details>
+      <div class="actions">
+        <button id="ai-copy">Copy & open ChatGPT ↗</button
+        ><button id="ai-prompt">Download prompt .txt</button>
+      </div>
+      <p class="help">
+        Manual handoff: paste, review and send yourself. No automatic website
+        submission. ChatGPT account limits and privacy terms apply.
+      </p>
+      <details class="api-settings">
+        <summary>Optional OpenAI API / may cost money</summary>
+        <p class="help">
+          Uses api.openai.com only. Key stays in this window and is cleared on
+          close. No key is stored in checkpoints or downloads. Request storage
+          is disabled, but the provider's retention policies still apply.
+        </p>
+        <div class="api-fields">
+          <label
+            >API key<input
+              id="api-key"
+              type="password"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Enter key for this request only" /></label
+          ><label
+            >Model ID<input
+              id="api-model"
+              value="gpt-4.1-mini"
+              autocomplete="off"
+              spellcheck="false"
+          /></label>
+        </div>
+        <label class="inline-check"
+          ><input id="api-consent" type="checkbox" /> I consent to sending this
+          exact prompt and dataset to OpenAI and possible API charges.</label
+        >
+        <div class="actions">
+          <button id="ai-generate">Generate & download HTML</button
+          ><button id="ai-cancel" disabled>Cancel request</button>
+        </div>
+      </details>
+      <p id="ai-notice" role="status" aria-live="polite"></p>
+    </dialog>
+    <script src="fonts/tamil-font.js"></script>
+    <script src="core.js"></script>
+    <script src="analysis.js"></script>
+    <script src="workbook-extras.js"></script>
+    <script src="xlsx.js"></script>
+    <script src="ai.js"></script>
+    <script src="thumbnails.js"></script>
+    <script src="popup.js"></script>
+    <script src="ai-ui.js"></script>
+  </body>
+</html>
