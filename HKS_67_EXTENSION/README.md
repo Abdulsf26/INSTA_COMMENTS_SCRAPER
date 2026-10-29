@@ -4,8 +4,8 @@ A local-first desktop Chrome/Edge extension for collecting Instagram comments an
 
 ## Install
 
-1. Extract `HKS_67-v5-Extension.zip`.
-2. Open `chrome://extensions` (or `edge://extensions`), enable **Developer mode**, choose **Load unpacked**, and select the `HKS_67` folder containing `manifest.json`.
+1. Clone or download this repository (no ZIP and no build step are required).
+2. Open `chrome://extensions` (or `edge://extensions`), enable **Developer mode**, choose **Load unpacked**, and select the `HKS_67_EXTENSION` folder containing `manifest.json`.
 3. Sign in normally at **www.instagram.com**, open a post, and reload its tab after installing.
 4. Open HKS_67. Keep **Deep pagination**, **Reply threads**, a **root limit of 0**, and a delay of **2500 ms or higher**. Start collection.
 5. Keep the original post tab open. The extension popup can close while collection continues. Use **Open workspace** for a larger dashboard.
@@ -73,6 +73,8 @@ No real paid key was used in release validation. Provider requests/output/error 
 Runtime dependencies: **none**. Native browser JS/CSS/HTML, no CDN library or framework. An offline Noto Sans Tamil fallback (SIL OFL, license in `fonts/OFL.txt`) is bundled for Tamil glyphs and embedded into analysis HTML; no font network request is needed. Development dependencies are only for tests/formatting.
 
 ```sh
+# The checks below ran in the author's build workspace. Their test files are not
+# included in this repository, so these commands cannot be reproduced from here:
 npm install
 npm test                    # 13 state + 13 media/core + 10 Excel + 14 analysis/AI checks
 npx playwright install chromium
@@ -81,4 +83,9 @@ npm run test:ui             # axe + 320/640/780/1280 CSS viewport checks
 MOLI_BIN=/path/to/moli npm run test:browser  # 10 DOM fixture checks
 ```
 
-See `VALIDATION.md` for tested boundaries; `SCHEMA.md` for v5 export changes; `ARCHITECTURE.md` for module ownership; `docs/UI-SKILLS.md` for the supplied skill installation/use. The separate arguments PDF is a 24-point structured review using two simulated perspectives, not two independent reviewers. Its editable source and optional ReportLab builder are included under `docs/` and `tools/`.
+`package.json` lists those scripts and the dev-only tooling (Playwright, axe, Prettier) that was used; nothing at runtime imports them. See `VALIDATION.md` for tested boundaries; `SCHEMA.md` for v5 export changes; `ARCHITECTURE.md` for module ownership; `docs/UI-SKILLS.md` for the supplied skill installation/use. The separate arguments PDF is a 24-point structured review using two simulated perspectives, not two independent reviewers. Its editable source and optional ReportLab builder are included under `docs/` and `tools/`.
+
+## License
+
+This extension's own code and documents are released under the **MIT license** — see `../LICENSE` (© 2026 Abdul Rahuman M). The bundled `fonts/tamil-font.js` asset stays under the **SIL Open Font License 1.1** (full text in `fonts/OFL.txt`, source notes in `fonts/README.md`) and is not relicensed by the MIT grant. Nothing here licenses Instagram's service, marks or data.
+
